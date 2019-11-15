@@ -1,0 +1,39 @@
+name: UAP Packaging
+
+on:
+  release:
+    types: [prereleased]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup MSBuild
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: MSBuild
+      working-directory: src/KFCarousel
+      run: |
+        'x86|x64|ARM|ARM64|Any CPU' -split '\|' | `
+          ForEach-Object { 
+            msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ 
+          }
+      shell: pwsh
+
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+    
+    - name: Nuget Pack
+      working-directory: src/KFCarousel
+      shell: pwsh
+      env:
+        HASH: ${{ github.sha }}
+        API: ${{ secrets.NuGetAPI }}
+      run: |
+        nuget pack KFCarousel.nuspec `
+          -OutputFileNamesWithoutVersion `
+          -Suffix ("ci" + $env:HASH.Substring(0, 7))
+        nuget push KFCarousel.nupkg $env:API -Source https://api.nuget.org/v3/index.json

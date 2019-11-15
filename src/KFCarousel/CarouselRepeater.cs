@@ -5,6 +5,7 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
 
 namespace KFCarousel
 {
@@ -13,17 +14,28 @@ namespace KFCarousel
         public CarouselRepeater()
         {
             Layout = new CarouselLayout();
+            BindingOperations.SetBinding(Layout, CarouselLayout.ViewportProperty, new Binding
+            {
+                Source = this,
+                Path = new PropertyPath(nameof(Viewport)),
+            });
+
             EffectiveViewportChanged += CarouselRepeater_EffectiveViewportChanged;
+        }
+
+        private static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(nameof(Viewport), typeof(Size), typeof(CarouselRepeater), new PropertyMetadata(Size.Empty));
+        public Size Viewport
+        {
+            get => (Size)GetValue(ViewportProperty);
+            set => SetValue(ViewportProperty, value);
         }
 
         private void CarouselRepeater_EffectiveViewportChanged(FrameworkElement sender, EffectiveViewportChangedEventArgs args)
         {
-            if (Layout is CarouselLayout layout)
-            {
-                var vp = args.MaxViewport;
-                layout.Viewport = new Size(Math.Round(vp.Width), Math.Round(vp.Height));
-            }
+            var vp = args.MaxViewport;
+            Viewport = new Size(Math.Round(vp.Width), Math.Round(vp.Height));
         }
+
 
         #region IScrollSnapPointsInfo
 
@@ -35,8 +47,7 @@ namespace KFCarousel
             if (orientation == Orientation.Vertical)
                 return 0f;
 
-            var viewport = ((CarouselLayout)Layout).Viewport;
-            return (float)Math.Round(viewport.Width * 0.9);
+            return (float)Math.Round(Viewport.Width * 0.9);
         }
 
         public bool AreHorizontalSnapPointsRegular => true;

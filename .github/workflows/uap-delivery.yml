@@ -34,5 +34,5 @@ jobs:
       run: |
         nuget pack KFCarousel.nuspec `
           -OutputFileNamesWithoutVersion `
-          -Suffix ("ci" + $HASH.Substring(0, 7))
+          -Suffix ("ci" + $env:HASH.Substring(0, 7))
         nuget push KFCarousel.nupkg ${{ secrets.NuGetAPI }}

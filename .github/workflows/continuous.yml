@@ -1,0 +1,17 @@
+name: Continuous Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup MSBuild
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: MSBuild
+      working-directory: src/KFCarousel
+      run: msbuild -t:Restore,Build -p:Configuration=Release -p:Platform='Any CPU'

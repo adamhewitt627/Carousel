@@ -1,6 +1,8 @@
 name: UAP Packaging
 
-on: [push]
+on:
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -28,6 +30,6 @@ jobs:
       working-directory: src/KFCarousel
       shell: pwsh
       run: |
-        nuget pack KFCarousel.nuspec -OutputFileNamesWithoutVersion -Suffix '-ci${{ GITHUB_SHA }}'
+        nuget pack KFCarousel.nuspec -OutputFileNamesWithoutVersion
         nuget push KFCarousel.nupkg ${{ secrets.NuGetAPI }}
 

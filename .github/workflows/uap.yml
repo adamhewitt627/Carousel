@@ -1,0 +1,13 @@
+name: UAP Packaging
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build with dotnet
+      run: msbuild src/KFCarousel

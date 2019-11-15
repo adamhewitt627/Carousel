@@ -29,8 +29,10 @@ jobs:
     - name: Nuget Pack
       working-directory: src/KFCarousel
       shell: pwsh
+      env:
+        HASH: ${{ GITHUB_SHA }}
       run: |
         nuget pack KFCarousel.nuspec `
           -OutputFileNamesWithoutVersion `
-          -Suffix ("ci" + "$GITHUB_SHA".Substring(0, 7))
+          -Suffix ("ci" + $HASH.Substring(0, 7))
         nuget push KFCarousel.nupkg ${{ secrets.NuGetAPI }}

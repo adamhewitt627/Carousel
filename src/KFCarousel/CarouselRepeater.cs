@@ -19,7 +19,10 @@ namespace KFCarousel
         private void CarouselRepeater_EffectiveViewportChanged(FrameworkElement sender, EffectiveViewportChangedEventArgs args)
         {
             if (Layout is CarouselLayout layout)
-                layout.Viewport = args.MaxViewport;
+            {
+                var vp = args.MaxViewport;
+                layout.Viewport = new Size(Math.Round(vp.Width), Math.Round(vp.Height));
+            }
         }
 
         #region IScrollSnapPointsInfo
@@ -33,7 +36,6 @@ namespace KFCarousel
                 return 0f;
 
             var viewport = ((CarouselLayout)Layout).Viewport;
-            offset = (float)Math.Round(viewport.Width * 0.5);
             return (float)Math.Round(viewport.Width * 0.9);
         }
 
@@ -47,65 +49,49 @@ namespace KFCarousel
 
         #endregion IScrollSnapPointsInfo
 
-        private class CarouselLayout : VirtualizingLayout
+        private class CarouselLayout : NonVirtualizingLayout
         {
-            public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(nameof(Viewport), typeof(Rect), typeof(CarouselLayout),
-                new PropertyMetadata(Rect.Empty, (o, e) =>
-                {
-                    var viewport = (Rect)e.NewValue;
-                    o.SetValue(ItemWidthProperty, Math.Round(viewport.Width * 0.9));
-                }));
-            public Rect Viewport
+            public static readonly DependencyProperty ViewportProperty = DependencyProperty.Register(nameof(Viewport), typeof(Size), typeof(CarouselLayout),
+                new PropertyMetadata(Size.Empty, (o, e) => ((CarouselLayout)o).InvalidateMeasure()));
+            public Size Viewport
             {
-                get => (Rect)GetValue(ViewportProperty);
+                get => (Size)GetValue(ViewportProperty);
                 set => SetValue(ViewportProperty, value);
             }
 
-            private static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register(nameof(ItemWidth), typeof(double), typeof(CarouselLayout),
-                new PropertyMetadata(double.PositiveInfinity, (o, e) => ((CarouselLayout)o).InvalidateMeasure()));
-            private double ItemWidth
+            protected override Size MeasureOverride(NonVirtualizingLayoutContext context, Size availableSize)
             {
-                get => (double)GetValue(ItemWidthProperty);
-                set => SetValue(ItemWidthProperty, value);
-            }
-
-            protected override Size MeasureOverride(VirtualizingLayoutContext context, Size availableSize)
-            {
-                if (double.IsInfinity(ItemWidth))
+                if (availableSize.IsEmpty || Viewport.IsEmpty)
                     return new Size(0, 0);
 
-                /*TODO:
-                 *  - Virtualizing
-                 *  - Wrapping (it's a layout, so why not?)
-                 */
-                var itemSize = new Size(ItemWidth, availableSize.Height);
+                var itemWidth = Math.Round(Viewport.Width * 0.9);
+                var itemSize = new Size(itemWidth, availableSize.Height);
 
-                for (int i = 0; i < context.ItemCount; i++)
-                {
-                    var element = context.GetOrCreateElementAt(i);
+                var children = context.Children;
+                foreach (var element in children)
                     element.Measure(itemSize);
-                }
 
                 var desiredSize = new Size(
-                    width: context.ItemCount * ItemWidth + Math.Round(Viewport.Width * .05) * 2,
+                    width: children.Count * itemWidth + Math.Round(Viewport.Width * .05) * 2,
                     height: availableSize.Height
                 );
                 return desiredSize;
             }
 
-            protected override Size ArrangeOverride(VirtualizingLayoutContext context, Size finalSize)
+            protected override Size ArrangeOverride(NonVirtualizingLayoutContext context, Size finalSize)
             {
-                if (double.IsInfinity(ItemWidth))
-                    return finalSize;
+                if (Viewport.IsEmpty)
+                    return new Size(0, 0);
 
                 var gutter = Math.Round(Viewport.Width * .05);
-                
+                var itemWidth = Math.Round(Viewport.Width * 0.9);
+                var children = context.Children;
+
                 var x = gutter;
-                for (int i = 0; i < context.ItemCount; i++)
+                foreach (var element in children)
                 {
-                    var element = context.GetOrCreateElementAt(i);
-                    element.Arrange(new Rect(x, 0, ItemWidth, finalSize.Height));
-                    x += ItemWidth;
+                    element.Arrange(new Rect(x, 0, itemWidth, finalSize.Height));
+                    x += itemWidth;
                 }
                 x += gutter;
 

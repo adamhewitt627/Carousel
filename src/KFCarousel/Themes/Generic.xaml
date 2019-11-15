@@ -21,7 +21,7 @@
                                 HorizontalScrollBarVisibility="Hidden"
                                 HorizontalScrollMode="Enabled"
                                 HorizontalSnapPointsType="MandatorySingle"
-                                HorizontalSnapPointsAlignment="Center">
+                                HorizontalSnapPointsAlignment="Near">
 
                                 <local:CarouselRepeater
                                     x:Name="PART_ItemsRepeater"

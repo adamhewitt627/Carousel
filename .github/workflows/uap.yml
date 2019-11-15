@@ -12,5 +12,7 @@ jobs:
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
 
-    - name: MSBuil
-      run: msbuild src/KFCarousel
+    - name: MSBuild
+      working-directory: src/KFCarousel
+      shell: pwsh
+      run: 'x86|x64|ARM|ARM64|Any CPU' -split '\|' | ForEach-Object { msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ }

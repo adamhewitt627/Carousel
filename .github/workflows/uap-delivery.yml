@@ -30,7 +30,7 @@ jobs:
       working-directory: src/KFCarousel
       shell: pwsh
       env:
-        HASH: ${{ GITHUB_SHA }}
+        HASH: ${{ github.sha }}
       run: |
         nuget pack KFCarousel.nuspec `
           -OutputFileNamesWithoutVersion `

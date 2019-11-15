@@ -9,5 +9,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Build with dotnet
+    - name: Setup MSBuild
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: MSBuil
       run: msbuild src/KFCarousel

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <!-- https://docs.microsoft.com/en-us/nuget/guides/create-uwp-packages 
+    'x86|x64|ARM|ARM64'-split'\|'|%{ msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ }
+  -->
+  <metadata>
+    <id>KFCarousel</id>
+    <version>0.1</version>
+    <title>KFCarousel</title>
+    <authors>Adam Hewitt</authors>
+    <projectUrl>https://github.com/adamhewitt627/KFCarousel</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An ItemsRepeater-based Carousel control.</description>
+    <releaseNotes>Initial evaluation of this approach.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>uwp winrt</tags>
+    <dependencies>
+      <group targetFramework="UAP10.0" />
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="bin\Release\**\*.*" target="lib\uap10.0" />
+
+    <file src="bin\ARM\Release\**\*.*" target="runtimes\win10-arm\native" />
+    <file src="bin\ARM64\Release\**\*.*" target="runtimes\win10-arm64\native" />
+    <file src="bin\x64\Release\**\*.*" target="runtimes\win10-x64\native" />
+    <file src="bin\x86\Release\**\*.*" target="runtimes\win10-x86\native" />
+  </files>
+</package>

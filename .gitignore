@@ -3,3 +3,9 @@ obj
 
 .vs
 .suo
+*.exe
+*.dll
+*.nupkg
+*.zip
+
+KFCarousel.0.1.0

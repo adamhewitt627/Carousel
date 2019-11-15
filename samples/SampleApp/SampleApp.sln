@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp.csproj", "{27CAEB36-FC37-47F6-8285-57816BDFBBBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarouselRepeater", "..\..\src\CarouselRepeater\CarouselRepeater.csproj", "{8537DA0B-4E61-48D6-94C5-49D37D67000E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KFCarousel", "..\..\src\KFCarousel\KFCarousel.csproj", "{8537DA0B-4E61-48D6-94C5-49D37D67000E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

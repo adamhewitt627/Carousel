@@ -20,3 +20,9 @@ jobs:
             msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ 
           }
       shell: pwsh
+
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+    - name: Nuget Pack
+      working-directory: src/KFCarousel
+      run: nuget pack KFCarousel.nuspec

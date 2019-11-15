@@ -36,4 +36,4 @@ jobs:
         nuget pack KFCarousel.nuspec `
           -OutputFileNamesWithoutVersion `
           -Suffix ("ci" + $env:HASH.Substring(0, 7))
-        nuget push KFCarousel.nupkg $env:API
+        nuget push KFCarousel.nupkg $env:API -Source https://api.nuget.org/v3/index.json

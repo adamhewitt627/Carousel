@@ -31,8 +31,9 @@ jobs:
       shell: pwsh
       env:
         HASH: ${{ github.sha }}
+        API: ${{ secrets.NuGetAPI }}
       run: |
         nuget pack KFCarousel.nuspec `
           -OutputFileNamesWithoutVersion `
           -Suffix ("ci" + $env:HASH.Substring(0, 7))
-        nuget push KFCarousel.nupkg ${{ secrets.NuGetAPI }}
+        nuget push KFCarousel.nupkg $env:API

@@ -14,5 +14,9 @@ jobs:
 
     - name: MSBuild
       working-directory: src/KFCarousel
+      run: |
+        'x86|x64|ARM|ARM64|Any CPU' -split '\|' | `
+          ForEach-Object { 
+            msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ 
+          }
       shell: pwsh
-      run: 'x86|x64|ARM|ARM64|Any CPU' -split '\|' | ForEach-Object { msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ }

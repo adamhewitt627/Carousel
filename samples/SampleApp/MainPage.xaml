@@ -23,7 +23,6 @@
                                 Content="{Binding}"
                                 BorderThickness="{ThemeResource ListViewItemRevealBorderThemeThickness}"
                                 BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                                Margin="2"
                                 />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

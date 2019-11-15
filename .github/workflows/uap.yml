@@ -23,6 +23,11 @@ jobs:
 
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
+    
     - name: Nuget Pack
       working-directory: src/KFCarousel
-      run: nuget pack KFCarousel.nuspec
+      shell: pwsh
+      run: |
+        nuget pack KFCarousel.nuspec -OutputFileNamesWithoutVersion
+        nuget push KFCarousel.nupkg -Source "GPR"
+

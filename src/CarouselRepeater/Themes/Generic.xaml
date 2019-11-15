@@ -1,19 +1,40 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:KF.CarouselRepeater">
+    xmlns:local="using:KFCarousel"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
 
     <Style TargetType="local:Carousel" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:Carousel">
-                    <Border
+                    <Grid
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                    </Border>
+
+                        <muxc:ItemsRepeaterScrollHost>
+                            <ScrollViewer
+                                x:Name="PART_ScrollViewer"
+                                VerticalScrollBarVisibility="Disabled"
+                                VerticalScrollMode="Disabled"
+                                HorizontalScrollBarVisibility="Hidden"
+                                HorizontalScrollMode="Enabled"
+                                HorizontalSnapPointsType="MandatorySingle"
+                                HorizontalSnapPointsAlignment="Center">
+
+                                <local:CarouselRepeater
+                                    x:Name="PART_ItemsRepeater"
+                                    ItemsSource="{TemplateBinding ItemsSource}"
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    />
+
+                            </ScrollViewer>
+                        </muxc:ItemsRepeaterScrollHost>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>

@@ -28,7 +28,6 @@ jobs:
       working-directory: src/KFCarousel
       shell: pwsh
       run: |
-        nuget source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/adamhewitt627/index.json" -UserName ${GITHUB_ACTOR} -Password ${{ secrets.GITHUB_TOKEN }}
-        nuget pack KFCarousel.nuspec -OutputFileNamesWithoutVersion
-        nuget push KFCarousel.nupkg -Source "GitHub"
+        nuget pack KFCarousel.nuspec -OutputFileNamesWithoutVersion -Suffix '-ci${{ GITHUB_SHA }}'
+        nuget push KFCarousel.nupkg ${{ secrets.NuGetAPI }}
 

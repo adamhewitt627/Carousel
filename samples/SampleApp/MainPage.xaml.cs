@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using Windows.UI.Xaml.Controls;
 
 namespace SampleApp
 {
@@ -7,7 +9,12 @@ namespace SampleApp
         public MainPage()
         {
             InitializeComponent();
-            carousel.ItemsSource = new[] { "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth" };
+
+            //var source = new ObservableCollection<string>(new[] { "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh" });
+            var source = new ObservableCollection<int>(Enumerable.Range(1, 17));
+            carousel.ItemsSource = source;
+
+            Loaded += (o, e) => source.Add(source.Count + 1);
         }
     }
 }

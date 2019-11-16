@@ -23,12 +23,14 @@
                                 Content="{Binding}"
                                 BorderThickness="{ThemeResource ListViewItemRevealBorderThemeThickness}"
                                 BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-                                Margin="2"
+                                Width="400"
                                 />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </kf:Carousel>
 
+
+                <MenuFlyoutSeparator />
                 <Border
                     Height="4000"
                     />

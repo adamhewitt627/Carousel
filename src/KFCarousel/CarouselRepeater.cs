@@ -13,10 +13,9 @@ namespace KFCarousel
     {
         public CarouselRepeater()
         {
-            Layout = new UniformGridLayout
+            Layout = new StackLayout
             {
-                MinItemWidth = 400,
-                MinItemHeight = 300,
+                Orientation = Orientation.Horizontal,
             };
 
             EffectiveViewportChanged += CarouselRepeater_EffectiveViewportChanged;
@@ -34,16 +33,11 @@ namespace KFCarousel
         private void CarouselRepeater_EffectiveViewportChanged(FrameworkElement sender, EffectiveViewportChangedEventArgs args)
         {
             Viewport = args.MaxViewport;
-            if (Layout is UniformGridLayout layout)
-                layout.MinItemWidth = Math.Round(args.MaxViewport.Width * 0.9);
-
             HorizontalSnapPointsChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void CarouselRepeater_ElementPrepared(ItemsRepeater sender, ItemsRepeaterElementPreparedEventArgs args)
-        {
-            HorizontalSnapPointsChanged?.Invoke(this, EventArgs.Empty);
-        }
+        private void CarouselRepeater_ElementPrepared(ItemsRepeater sender, ItemsRepeaterElementPreparedEventArgs args) 
+            => HorizontalSnapPointsChanged?.Invoke(this, EventArgs.Empty);
 
         #region IScrollSnapPointsInfo
 
@@ -51,27 +45,22 @@ namespace KFCarousel
         {
             return alignment switch
             {
-                SnapPointsAlignment.Center => center().ToList(),
+                SnapPointsAlignment.Center => center().OrderBy(x => x).ToList(),
                 _ => new List<float>(), //TODO
             };
 
             IEnumerable<float> center()
             {
+                var center = (float)Viewport.Width / 2;
+                yield return center;
+
                 for (var i = 0; i < ItemsSourceView.Count; i++)
                 {
-                    if (!(TryGetElement(i) is UIElement e))
-                        continue;
-
-                    var center = i switch
-                    {
-                        0 => (float)Viewport.Width / 2,
-                        int j when j == ItemsSourceView.Count - 1 =>
-                            e.ActualOffset.X + e.ActualSize.X - (float)Viewport.Width / 2,
-                        _ => e.ActualOffset.X + (e.ActualSize.X / 2),
-                    };
-
-                    yield return center;
+                    if (TryGetElement(i) is UIElement e)
+                        yield return e.ActualOffset.X + (e.ActualSize.X / 2);
                 }
+
+                yield return ActualSize.X - center;
             }
         }
 

@@ -18,7 +18,7 @@
   </metadata>
 
   <files>
-    <file src="bin\Release\**\*.*" target="lib\uap10.0" />
+    <!-- <file src="bin\Release\**\*.*" target="lib\uap10.0" /> -->
 
     <file src="bin\ARM\Release\**\*.*" target="runtimes\win10-arm\native" />
     <file src="bin\ARM64\Release\**\*.*" target="runtimes\win10-arm64\native" />

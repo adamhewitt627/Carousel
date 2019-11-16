@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +43,33 @@ namespace KFCarousel
 
         public IReadOnlyList<float> GetIrregularSnapPoints(Orientation orientation, SnapPointsAlignment alignment)
         {
-            return alignment switch
+            if (orientation == Orientation.Vertical)
+                return new List<float>();
+
+            var result = (alignment switch
             {
-                SnapPointsAlignment.Center => center().OrderBy(x => x).ToList(),
-                _ => new List<float>(), //TODO
-            };
+                SnapPointsAlignment.Near => near(),
+                SnapPointsAlignment.Center => center(),
+                SnapPointsAlignment.Far => far(),
+                _ => Enumerable.Empty<float>(), //TODO
+            }).Distinct().OrderBy(x => x).ToList();
+
+            return result;
+
+            #region Factories 
+
+            IEnumerable<float> near()
+            {
+                yield return 0;
+
+                for (var i = 0; i < ItemsSourceView.Count; i++)
+                {
+                    if (TryGetElement(i) is UIElement e)
+                        yield return e.ActualOffset.X;
+                }
+
+                yield return ActualSize.X - (float)Viewport.Width;
+            }
 
             IEnumerable<float> center()
             {
@@ -62,6 +84,21 @@ namespace KFCarousel
 
                 yield return ActualSize.X - center;
             }
+
+            IEnumerable<float> far()
+            {
+                yield return (float)Viewport.Width;
+
+                for (var i = 0; i < ItemsSourceView.Count; i++)
+                {
+                    if (TryGetElement(i) is UIElement e)
+                        yield return e.ActualOffset.X + e.ActualSize.X;
+                }
+
+                yield return ActualSize.X;
+            }
+
+            #endregion
         }
 
         public float GetRegularSnapPoints(Orientation orientation, SnapPointsAlignment alignment, out float offset) => offset = 0f;

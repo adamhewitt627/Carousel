@@ -1,17 +1,15 @@
 <?xml version="1.0"?>
 <package>
-  <!-- https://docs.microsoft.com/en-us/nuget/guides/create-uwp-packages 
-    'x86|x64|ARM|ARM64'-split'\|'|%{ msbuild -t:Restore,Build -p:Configuration=Release -p:Platform=$_ }
-  -->
+  <!-- https://docs.microsoft.com/en-us/nuget/guides/create-uwp-packages -->
   <metadata>
     <id>KFCarousel</id>
-    <version>0.1</version>
+    <version>0.1.0</version>
     <title>KFCarousel</title>
     <authors>Adam Hewitt</authors>
     <projectUrl>https://github.com/adamhewitt627/KFCarousel</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An ItemsRepeater-based Carousel control.</description>
-    <releaseNotes>Initial evaluation of this approach.</releaseNotes>
+    <releaseNotes>Largely functional at this point.</releaseNotes>
     <copyright>Copyright 2019</copyright>
     <tags>uwp winrt</tags>
     <dependencies>

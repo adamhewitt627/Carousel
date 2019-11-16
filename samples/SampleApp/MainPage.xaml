@@ -28,6 +28,8 @@
                     </ItemsControl.ItemTemplate>
                 </kf:Carousel>
 
+
+                <MenuFlyoutSeparator />
                 <Border
                     Height="4000"
                     />

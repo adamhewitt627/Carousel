@@ -21,16 +21,13 @@
                                 HorizontalScrollBarVisibility="Hidden"
                                 HorizontalScrollMode="Enabled"
                                 HorizontalSnapPointsType="MandatorySingle"
-                                HorizontalSnapPointsAlignment="Near">
+                                HorizontalSnapPointsAlignment="Center">
 
-                                <muxc:ItemsRepeater
+                                <local:CarouselRepeater
                                     x:Name="PART_ItemsRepeater"
                                     ItemsSource="{TemplateBinding ItemsSource}"
-                                    ItemTemplate="{TemplateBinding ItemTemplate}">
-                                    <muxc:ItemsRepeater.Layout>
-                                        <muxc:StackLayout Orientation="Horizontal" />
-                                    </muxc:ItemsRepeater.Layout>
-                                </muxc:ItemsRepeater>
+                                    ItemTemplate="{TemplateBinding ItemTemplate}"
+                                    />
 
                             </ScrollViewer>
                         </muxc:ItemsRepeaterScrollHost>
